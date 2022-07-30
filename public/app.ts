@@ -27,8 +27,9 @@ submit.onclick = () => {
 
   const xhr = new XMLHttpRequest();
   xhr.open("POST" ,"convert-yt-mp3", true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.send(JSON.stringify(multipleVideos));
+  xhr.setRequestHeader("Content-Type", "application/json");
+  const videosIdData = JSON.stringify(multipleVideos)
+  xhr.send(videosIdData);
 
   multipleVideos = [];
 }

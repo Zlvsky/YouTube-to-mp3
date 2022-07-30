@@ -1,3 +1,7 @@
+# Ignores compiled TypeScript files
+**/**/*.map
+**/**/*.js
+
 # Logs
 logs
 *.log

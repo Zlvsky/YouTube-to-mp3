@@ -49,10 +49,3 @@ app.post("/convert-yt-mp3", async (req: Request, res: Response) => {
   //   }
   // })
 })
-
-app.get('/links/:linki', async (request, response) => {
-  let parsedValues = [];
-  parsedValues = request.params.linki.split(',');
-  const arrlen = parsedValues.length;
-    console.log(`Downloading ${arrlen} items...`);
-});
