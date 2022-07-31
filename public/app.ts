@@ -21,15 +21,44 @@ if (addButton != null) {
     }
   }
 }
-submit.onclick = () => {
+submit.onclick = async () => {
   counting = 0;
   count.innerHTML = `${counting}`;
 
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST" ,"convert-yt-mp3", true);
-  xhr.setRequestHeader("Content-Type", "application/json");
-  const videosIdData = JSON.stringify(multipleVideos)
-  xhr.send(videosIdData);
+  // const xhr = new XMLHttpRequest();
+  // xhr.open("POST" ,"convert-yt-mp3", true);
+  // xhr.setRequestHeader("Content-Type", "application/json");
+  // const videosIdData = JSON.stringify(multipleVideos)
+  // xhr.send(videosIdData);
 
+  const fetchMp3Links = async () => {
+    const res = await fetch("/convert-yt-mp3", {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(multipleVideos)
+  });
+  const body = await res.json();
+  console.log(body);
+  
+
+  }
+
+  const data = await fetchMp3Links();
+
+  // fetch("/convert-yt-mp3", {
+  //   method: 'POST',
+  //   headers: {
+  //     "Content-Type": "application/json"
+  //   },
+  //   body: JSON.stringify(multipleVideos)
+  // })
+  // .then(res => res.json())
+  // .then((res) => {
+  //   if(res.ok) {
+  //     console.log(res.data);
+  //   }
+  // })
   multipleVideos = [];
 }
