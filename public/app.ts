@@ -21,17 +21,8 @@ if (addButton != null) {
     }
   }
 }
-submit.onclick = async () => {
-  counting = 0;
-  count.innerHTML = `${counting}`;
 
-  // const xhr = new XMLHttpRequest();
-  // xhr.open("POST" ,"convert-yt-mp3", true);
-  // xhr.setRequestHeader("Content-Type", "application/json");
-  // const videosIdData = JSON.stringify(multipleVideos)
-  // xhr.send(videosIdData);
-
-  const fetchMp3Links = async () => {
+const fetchMp3Links = async () => {
     const res = await fetch("/convert-yt-mp3", {
     method: 'POST',
     headers: {
@@ -39,26 +30,27 @@ submit.onclick = async () => {
     },
     body: JSON.stringify(multipleVideos)
   });
-  const body = await res.json();
-  console.log(body);
-  
+    const downloadLinks = await res.json();
 
+    return downloadLinks;
   }
 
-  const data = await fetchMp3Links();
+const autoDownloadMp3 = (links: Array<string>): void => {
+  links.forEach((downloadLink) => {
+    const downloadElement = document.createElement("a");
+    downloadElement.href = downloadLink;
+    document.body.appendChild(downloadElement);
+    downloadElement.click();
+    document.body.removeChild(downloadElement);
+  })
+} 
 
-  // fetch("/convert-yt-mp3", {
-  //   method: 'POST',
-  //   headers: {
-  //     "Content-Type": "application/json"
-  //   },
-  //   body: JSON.stringify(multipleVideos)
-  // })
-  // .then(res => res.json())
-  // .then((res) => {
-  //   if(res.ok) {
-  //     console.log(res.data);
-  //   }
-  // })
+submit.onclick = async () => {
+  counting = 0;
+  count.innerHTML = `${counting}`;
+
+  const generatedLinks = await fetchMp3Links();
+  autoDownloadMp3(generatedLinks);
+  
   multipleVideos = [];
 }
