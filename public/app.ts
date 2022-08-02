@@ -8,6 +8,10 @@ var counting = 0;
 var firstReg = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/gi;
 var secondReg = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
 
+const delay = (time: number) => {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
 if (addButton != null) {
   addButton.onclick = () => {
     if (input != null) {
@@ -37,11 +41,15 @@ const fetchMp3Links = async () => {
 
 const autoDownloadMp3 = (links: Array<string>): void => {
   links.forEach((downloadLink) => {
-    const downloadElement = document.createElement("a");
-    downloadElement.href = downloadLink;
-    document.body.appendChild(downloadElement);
-    downloadElement.click();
-    document.body.removeChild(downloadElement);
+    console.log("2.", downloadLink);
+    delay(1000).then(() => {
+      window.open(downloadLink);
+      // const downloadElement = document.createElement("a");
+      // downloadElement.href = downloadLink;
+      // document.body.appendChild(downloadElement);
+      // downloadElement.click();
+      // document.body.removeChild(downloadElement);
+    })
   })
 } 
 
@@ -50,6 +58,8 @@ submit.onclick = async () => {
   count.innerHTML = `${counting}`;
 
   const generatedLinks = await fetchMp3Links();
+  console.log("1.", generatedLinks);
+  
   autoDownloadMp3(generatedLinks);
   
   multipleVideos = [];
