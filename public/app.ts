@@ -3,22 +3,39 @@ const input = document.getElementById('link') as HTMLInputElement,
       addButton = document.getElementById('add') as HTMLButtonElement,
       count = document.getElementById('counts') as HTMLSpanElement;
 
-var multipleVideos: Array<string> = [];
+import { checkIfVideoIdValid, convertLinkToId } from "./tools/Validator.js";
+var downloadData: any;
 var counting = 0;
-var firstReg = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/gi;
-var secondReg = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
 
-const delay = (time: number) => {
-  return new Promise(resolve => setTimeout(resolve, time));
+const fetchMp3Links = async (videoId: string) => {
+    const dataToParse = {videoId: videoId};
+    const res = await fetch("/convert-yt-mp3", {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(dataToParse)
+  });
+    const downloadData = await res.json();
+
+    return downloadData;
+  }
+
+const handleAddLink = async () => {
+  const youtubeLink = input.value;
+  const videoIdData = convertLinkToId(youtubeLink);
+  if (videoIdData.status === "success") {
+    const videoId = videoIdData.videoId;
+    console.log(videoId);
+    
+    downloadData = await fetchMp3Links(videoId);
+  }
 }
 
 if (addButton != null) {
   addButton.onclick = () => {
     if (input != null) {
-      const inputValue = input.value;
-      const preID = inputValue.match(firstReg).toString();
-      const finalID = preID.match(secondReg)[7];
-      multipleVideos.push(finalID);
+      handleAddLink();
       input.value = ''
       counting++;
       count.innerHTML = `${counting}`;
@@ -26,41 +43,23 @@ if (addButton != null) {
   }
 }
 
-const fetchMp3Links = async () => {
-    const res = await fetch("/convert-yt-mp3", {
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(multipleVideos)
-  });
-    const downloadLinks = await res.json();
 
-    return downloadLinks;
-  }
 
-const autoDownloadMp3 = (links: Array<string>): void => {
-  links.forEach((downloadLink) => {
-    console.log("2.", downloadLink);
-    delay(1000).then(() => {
-      window.open(downloadLink);
-      // const downloadElement = document.createElement("a");
-      // downloadElement.href = downloadLink;
-      // document.body.appendChild(downloadElement);
-      // downloadElement.click();
-      // document.body.removeChild(downloadElement);
-    })
-  })
+const autoDownloadMp3 = (): void => {
+  const downloadElement = document.createElement("a");
+  downloadElement.href = downloadData.link;
+  document.body.appendChild(downloadElement);
+  downloadElement.click();
+  document.body.removeChild(downloadElement);
 } 
 
 submit.onclick = async () => {
   counting = 0;
   count.innerHTML = `${counting}`;
 
-  const generatedLinks = await fetchMp3Links();
-  console.log("1.", generatedLinks);
+  console.log("1.", downloadData);
   
-  autoDownloadMp3(generatedLinks);
+  autoDownloadMp3();
   
-  multipleVideos = [];
+  downloadData = {};
 }

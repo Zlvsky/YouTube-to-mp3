@@ -6,7 +6,7 @@ const app: Express = express();
 const port = process.env.PORT;
 
 
-import { checkIfVideoIdValid } from './tools/Validator.js';
+import { checkIfVideoIdValid } from './public/tools/Validator.js';
 
 
 const __dirname = path.resolve();
@@ -27,7 +27,7 @@ app.listen(port, function() {
 });
 
 
-const videoIdToLink = async (videoId: string): Promise<string> => {
+const videoIdToLink = async (videoId: string): Promise<any> => {
   const fetchAPI = await fetch(`https://youtube-mp36.p.rapidapi.com/dl?id=${videoId}`, {
       "method": "GET",
       "headers": {
@@ -39,28 +39,26 @@ const videoIdToLink = async (videoId: string): Promise<string> => {
   const fetchResponse = await fetchAPI.json();
 
   if (fetchResponse.status === "ok") {
-        return(fetchResponse.link);
+        return({
+           link: fetchResponse.link,
+           title: fetchResponse.title
+          });
   } else {
         console.log(fetchResponse.msg);
   }
 }
 
-const generateLinks = async (array: Array<string>) => {
-  const generatedLinks: Array<string> = [];
-
-  for (const videoId of array) {
-    const videoLink: string = await videoIdToLink(videoId);
-    generatedLinks.push(videoLink);
-  }
-  
-  return generatedLinks;
+const generateLink = async (videoId: string) => {
+  const videoLink = await videoIdToLink(videoId);
+  return videoLink;
 }
 
 app.post("/convert-yt-mp3", async (req: Request, res: Response) => {
-  const multipleVideos = await req.body;
+  const receivedData = await req.body;
+  const videoId = receivedData.videoId;
   
-  const downloadLinks = await generateLinks(multipleVideos);
+  const downloadLink = await generateLink(videoId);
   
-  res.send(JSON.stringify(downloadLinks));
+  res.send(JSON.stringify(downloadLink));
   
 })
