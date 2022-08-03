@@ -11,9 +11,14 @@ body {
 .color {
   color: #EF5F63;
 }
+.disactive {
+  background-color: #949494 !important;
+  cursor: not-allowed !important;
+}
 header {
   padding-left: 100px;
 }
+
 
 #app {
   display: flex;
@@ -108,7 +113,7 @@ h1 {
   display: inline-block;
   font-size: 16px;
   margin-left: 5px;
-  
+  transition: all ease-in-out 0.3s;
 }
 
 /* vinyl */

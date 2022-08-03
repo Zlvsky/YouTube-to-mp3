@@ -26,3 +26,10 @@ export const checkIfVideoIdValid = (videoId: string) => {
     }
     return true;
 }
+
+export const checkIfDownloadDataIsEmpty = (downloadData: {link: string, title: string}) => {
+    if (downloadData.link === '' && downloadData.title === '' ) {
+        return true;
+    }
+    return false;
+}

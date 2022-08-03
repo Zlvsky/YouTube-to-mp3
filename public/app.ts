@@ -1,11 +1,18 @@
 const input = document.getElementById('link') as HTMLInputElement,
       submit = document.getElementById('Convert') as HTMLButtonElement,
       addButton = document.getElementById('add') as HTMLButtonElement,
-      count = document.getElementById('counts') as HTMLSpanElement;
+      songName = document.getElementById('songName') as HTMLSpanElement;
 
-import { checkIfVideoIdValid, convertLinkToId } from "./tools/Validator.js";
-var downloadData: any;
-var counting = 0;
+import { checkIfVideoIdValid, convertLinkToId, checkIfDownloadDataIsEmpty } from "./tools/Validator.js";
+var downloadData = {link: '', title: ''};
+
+const updateDownloadButton = (ableToDownload: boolean) => {
+  if(ableToDownload === true) {
+    submit.classList.remove("disactive");
+  } else {
+    submit.classList.add("disactive");
+  }
+}
 
 const fetchMp3Links = async (videoId: string) => {
     const dataToParse = {videoId: videoId};
@@ -26,19 +33,18 @@ const handleAddLink = async () => {
   const videoIdData = convertLinkToId(youtubeLink);
   if (videoIdData.status === "success") {
     const videoId = videoIdData.videoId;
-    console.log(videoId);
-    
     downloadData = await fetchMp3Links(videoId);
+    updateDownloadButton(true);
+    songName.textContent = downloadData.title;
   }
 }
+
 
 if (addButton != null) {
   addButton.onclick = () => {
     if (input != null) {
       handleAddLink();
       input.value = ''
-      counting++;
-      count.innerHTML = `${counting}`;
     }
   }
 }
@@ -54,12 +60,10 @@ const autoDownloadMp3 = (): void => {
 } 
 
 submit.onclick = async () => {
-  counting = 0;
-  count.innerHTML = `${counting}`;
-
-  console.log("1.", downloadData);
-  
-  autoDownloadMp3();
-  
-  downloadData = {};
+  const isDataEmpty = checkIfDownloadDataIsEmpty(downloadData);
+  if(!isDataEmpty) {
+    autoDownloadMp3();
+    downloadData = {link: '', title: ''};
+    updateDownloadButton(false);
+  }
 }
