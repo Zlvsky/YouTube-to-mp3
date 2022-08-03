@@ -7,11 +7,34 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Muli&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Muli&display=swap"
+      rel="stylesheet"
+    />
     <title>mp3 downlaod</title>
   </head>
   <body>
     <div id="app">
+      <div id="loadingScreen" class="loadingDisactive">
+        <svg
+          class="spinner"
+          width="65px"
+          height="65px"
+          viewBox="0 0 66 66"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            class="path"
+            fill="none"
+            stroke-width="6"
+            stroke-linecap="round"
+            cx="33"
+            cy="33"
+            r="30"
+          ></circle>
+        </svg>
+      </div>
+
       <div id="contentSide">
         <header>
           <h2>YouTube2Mp3</h2>
@@ -24,7 +47,10 @@
               Convert your favourite <br />
               music fast & safely<span class="color">.</span>
             </h1>
-            <p class="description">Paste full youtube link, click add link and download!<br/> It's that simple:)</p>
+            <p class="description">
+              Paste full youtube link, click add link and download!<br />
+              It's that simple:)
+            </p>
           </div>
           <div id="linksWrap">
             <input
@@ -36,25 +62,17 @@
             <button id="add">add link</button>
           </div>
           <div id="wrap">
-            <div id="song">Song name: <span id="songName"></span></div>
-            
+            <div id="song">
+              <strong>Song name:</strong> <span id="songName"></span>
+            </div>
           </div>
-          <button id="Convert" class="disactive">
-            DOWNLOAD
-          </button>
+          <button id="Convert" class="disactive">DOWNLOAD</button>
         </div>
       </div>
 
       <div id="imageSide"></div>
     </div>
 
-    <!-- <div id="vinylWrap">
-      <div id="vinylContainer">
-        <div class="infiniteSpin">
-          <img src="/vinyl.svg" class="vinylImage" />
-        </div>
-      </div>
-    </div> -->
   </body>
   <script type="module" src="/tools/Validator.js" charset="utf-8"></script>
   <script type="module" src="app.js" charset="utf-8"></script>

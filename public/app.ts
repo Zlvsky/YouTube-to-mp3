@@ -1,7 +1,8 @@
 const input = document.getElementById('link') as HTMLInputElement,
       submit = document.getElementById('Convert') as HTMLButtonElement,
       addButton = document.getElementById('add') as HTMLButtonElement,
-      songName = document.getElementById('songName') as HTMLSpanElement;
+      songName = document.getElementById('songName') as HTMLSpanElement,
+      loading = document.getElementById("loadingScreen") as HTMLDivElement;
 
 import { checkIfVideoIdValid, convertLinkToId, checkIfDownloadDataIsEmpty } from "./tools/Validator.js";
 var downloadData = {link: '', title: ''};
@@ -14,7 +15,18 @@ const updateDownloadButton = (ableToDownload: boolean) => {
   }
 }
 
+const toggleLoading = () => {
+  if(loading.classList.contains("loadingDisactive")) {
+    loading.classList.remove("loadingDisactive");
+    loading.classList.add("loadingActive");
+  } else {
+    loading.classList.remove("loadingActive");
+    loading.classList.add("loadingDisactive");
+  }
+}
+
 const fetchMp3Links = async (videoId: string) => {
+    toggleLoading();
     const dataToParse = {videoId: videoId};
     const res = await fetch("/convert-yt-mp3", {
     method: 'POST',
@@ -24,7 +36,7 @@ const fetchMp3Links = async (videoId: string) => {
     body: JSON.stringify(dataToParse)
   });
     const downloadData = await res.json();
-
+    toggleLoading();
     return downloadData;
   }
 
