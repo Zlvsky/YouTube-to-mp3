@@ -37,6 +37,7 @@ const videoIdToLink = async (videoId: string): Promise<any> => {
     });
 
   const fetchResponse = await fetchAPI.json();
+  console.log("Fetch response", fetchResponse)
 
   if (fetchResponse.status === "ok") {
         return({
@@ -44,7 +45,7 @@ const videoIdToLink = async (videoId: string): Promise<any> => {
            title: fetchResponse.title
           });
   } else {
-        console.log(fetchResponse.msg);
+        console.log("Error", fetchResponse.msg);
   }
 }
 

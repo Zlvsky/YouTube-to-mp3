@@ -139,6 +139,14 @@ header {
   font-size: 14px;
   padding-left: 45px;
 }
+.failed {
+  outline: -webkit-focus-ring-color auto 1px;
+    outline-color: red;
+}
+.failed::after {
+  content: "\26A0";
+}
+
 #add {
   width: 20%;
   background-color: #EF5F63;
@@ -158,6 +166,10 @@ header {
   justify-content: space-between;
   margin-top: 30px;
 }
+#songName {
+  color: #00AB65;
+}
+
 
 
 

@@ -44,10 +44,14 @@ const handleAddLink = async () => {
   const youtubeLink = input.value;
   const videoIdData = convertLinkToId(youtubeLink);
   if (videoIdData.status === "success") {
+    input.classList.remove("failed");
     const videoId = videoIdData.videoId;
     downloadData = await fetchMp3Links(videoId);
     updateDownloadButton(true);
     songName.textContent = downloadData.title;
+  }
+  if (videoIdData.status === "fail") {
+    input.classList.add("failed");
   }
 }
 
