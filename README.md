@@ -21,7 +21,8 @@
 ## Showcase of project
 
 <h3>Usage of app</h3>
-![ytmp3gif](https://user-images.githubusercontent.com/45123514/196507373-22997998-fa29-4a71-8a34-11a75f771ee9.gif)
+<img src="https://user-images.githubusercontent.com/45123514/196509719-0435c261-052c-4205-98af-e61e95699463.gif" alt="App usage gif" />
+
 <br/>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
